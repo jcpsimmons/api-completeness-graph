@@ -5,7 +5,7 @@ from tqdm import tqdm
 def getNumArticles():
     '''
     Takes no arguments.
-    Returns an object of objects with SKU keys and values containing the number of featured articles
+    Returns a list of number of articles for all active skus
     '''
     print('Connecting to Firestore')
     db = firestore.Client()
@@ -21,4 +21,9 @@ def getNumArticles():
         allDocs[doc.id] = len(
             list(filter(None, doc.to_dict()['featuredArticles'].split(','))))
 
-    return(allDocs)
+    numArticles=[]
+
+    for doc in allDocs:
+        numArticles.append(allDocs[doc])
+
+    return(numArticles)
