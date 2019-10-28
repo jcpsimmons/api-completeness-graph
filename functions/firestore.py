@@ -13,15 +13,21 @@ def getNumArticles():
     allDocs = {}
 
     docs = db.collection(
-        "ls-restful-api-scrape").where("productStatus", "==", "Active").stream()
+        "ls-restful-api-scrape").where("productStatus", "==", "Active").where("inStock", "==", True).stream()
 
     print('Fetching all Active SKUs...')
 
-    for doc in tqdm(docs):
-        allDocs[doc.id] = len(
-            list(filter(None, doc.to_dict()['featuredArticles'].split(','))))
+    holderDict = {}
 
-    numArticles=[]
+    for doc in tqdm(docs):
+        if doc.to_dict()['hardKitComponent'] != 'yes':
+            holderDict[doc.id] = doc.to_dict()
+
+    for item in holderDict.keys():
+        allDocs[item] = len(
+            list(filter(None, holderDict[item]['featuredArticles'].split(','))))
+
+    numArticles = []
 
     for doc in allDocs:
         numArticles.append(allDocs[doc])
