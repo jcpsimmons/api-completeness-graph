@@ -6,7 +6,7 @@ import numpy as np
 
 def makeHisto(x, fileName):
     print('Plotting histogram.')
-    num_bins = 4
+    num_bins = 5
 
     fig, ax = plt.subplots()
 
